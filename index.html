@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flashforge Adventurer 5M 3D 프린터 마스터 웹 가이드</title>
+  <style>
+    :root {
+      --primary: #1E3A8A;
+      --primary-light: #3B82F6;
+      --accent: #0284C7;
+      --accent-warm: #F59E0B;
+      --success: #10B981;
+      --danger: #EF4444;
+      --bg: #F8FAFC;
+      --card-bg: #FFFFFF;
+      --text: #1E293B;
+      --text-muted: #64748B;
+      --border: #E2E8F0;
+      --radius: 14px;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      word-break: keep-all;
+    }
+
+    header.sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 20px;
+    }
+
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--primary);
+    }
+
+    .logo-badge {
+      background: linear-gradient(135deg, #1E3A8A, #0284C7);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    nav.quick-nav {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      scrollbar-width: none;
+    }
+    nav.quick-nav::-webkit-scrollbar { display: none; }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 20px;
+      background: #F1F5F9;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .nav-link:hover, .nav-link.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #1E3A8A 0%, #0F172A 100%);
+      color: white;
+      padding: 50px 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background: rgba(2, 132, 199, 0.35);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #7DD3FC;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-size: 2.3rem;
+      font-weight: 800;
+      line-height: 1.3;
+      margin-bottom: 16px;
+      letter-spacing: -0.5px;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .stat-pill {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 10px;
+      border-radius: 10px;
+      backdrop-filter: blur(5px);
+    }
+    .stat-num {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #38BDF8;
+    }
+    .stat-desc {
+      font-size: 0.75rem;
+      opacity: 0.8;
+    }
+
+    main.content-wrapper {
+      max-width: 1050px;
+      margin: 0 auto;
+      padding: 40px 20px 80px 20px;
+    }
+
+    section.module-section {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid #F1F5F9;
+    }
+
+    .section-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+    }
+
+    .section-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .section-desc {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      margin-top: 2px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .card-title {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 1.05rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .card-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #E0F2FE;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .visual-banner {
+      background: linear-gradient(135deg, #EFF6FF 0%, #E0F2FE 100%);
+      border: 1px solid #BAE6FD;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-around;
+      gap: 20px;
+    }
+
+    .visual-step {
+      text-align: center;
+      flex: 1;
+      min-width: 140px;
+    }
+
+    .visual-circle {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: white;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px auto;
+      font-size: 1.8rem;
+    }
+
+    .arrow-divider {
+      font-size: 1.5rem;
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    .table-container {
+      overflow-x: auto;
+      margin: 20px 0;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    table.custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+
+    table.custom-table th, table.custom-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    table.custom-table th {
+      background: #F1F5F9;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .tab-bar {
+      display: flex;
+      gap: 8px;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 20px;
+    }
+
+    .tab-btn {
+      padding: 10px 20px;
+      border: none;
+      background: transparent;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    .tab-pane {
+      display: none;
+    }
+    .tab-pane.active {
+      display: block;
+    }
+
+    .checklist-progress-bar {
+      background: #E2E8F0;
+      height: 12px;
+      border-radius: 6px;
+      overflow: hidden;
+      margin: 16px 0 24px 0;
+    }
+
+    .progress-fill {
+      background: linear-gradient(90deg, #3B82F6, #10B981);
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px;
+      border-radius: 10px;
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .checklist-item:hover {
+      background: #F1F5F9;
+    }
+
+    .checklist-item input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin-top: 3px;
+      cursor: pointer;
+      accent-color: var(--success);
+    }
+
+    .checklist-text h4 {
+      font-size: 0.98rem;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+    .checklist-text p {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+    }
+
+    .diagnostic-tool {
+      background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
+      border: 1px solid #BBF7D0;
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 24px;
+    }
+
+    .diag-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #166534;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .diag-btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .diag-btn {
+      background: white;
+      border: 1px solid #86EFAC;
+      color: #166534;
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .diag-btn:hover {
+      background: #166534;
+      color: white;
+    }
+
+    .diag-result {
+      margin-top: 16px;
+      padding: 14px;
+      background: white;
+      border-radius: 8px;
+      border-left: 4px solid #16A34A;
+      font-size: 0.92rem;
+      display: none;
+    }
+
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+
+    .faq-q {
+      padding: 14px 18px;
+      background: #F8FAFC;
+      font-weight: 700;
+      font-size: 0.95rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .faq-q:hover {
+      background: #F1F5F9;
+    }
+
+    .faq-a {
+      padding: 16px 18px;
+      background: white;
+      font-size: 0.9rem;
+      border-top: 1px solid var(--border);
+      display: none;
+      line-height: 1.6;
+    }
+
+    .certificate-card {
+      background: white;
+      border: 6px double #F59E0B;
+      border-radius: 16px;
+      padding: 32px;
+      text-align: center;
+      position: relative;
+      margin-top: 24px;
+    }
+
+    .cert-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #B45309;
+      margin-bottom: 8px;
+    }
+
+    .cert-inputs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .cert-input {
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      width: 200px;
+      text-align: center;
+    }
+
+    .stamp-btn {
+      background: linear-gradient(135deg, #D97706, #B45309);
+      color: white;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(180, 83, 9, 0.3);
+      transition: all 0.2s;
+    }
+    .stamp-btn:hover {
+      transform: scale(1.04);
+    }
+
+    .stamp-badge {
+      display: inline-block;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 3px dashed #DC2626;
+      color: #DC2626;
+      font-weight: 900;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: rotate(-15deg);
+      margin: 15px auto 0 auto;
+      display: none;
+    }
+
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .action-btn:hover {
+      background: var(--accent);
+    }
+
+    @media print {
+      header.sticky-header { display: none; }
+      body { background: white; }
+      section.module-section { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header class="sticky-header">
+    <div class="nav-container">
+      <div class="logo-area">
+        <span>🖨️ 3D MAKER</span>
+        <span class="logo-badge">ADVENTURER 5M</span>
+      </div>
+      <nav class="quick-nav">
+        <a href="#theory" class="nav-link">1. 기초 이론</a>
+        <a href="#terms" class="nav-link">2. 11대 용어</a>
+        <a href="#download" class="nav-link">3. 모델 받기</a>
+        <a href="#slicing" class="nav-link">4. 슬라이싱 6단계</a>
+        <a href="#slicers" class="nav-link">5. 슬라이서 비교</a>
+        <a href="#software-lineage" class="nav-link">6. 소프트웨어 차이</a>
+        <a href="#supports" class="nav-link">7. 서포트 연구소</a>
+        <a href="#hardware" class="nav-link">8. USB 실습</a>
+        <a href="#safety" class="nav-link">9. 안전 & FAQ</a>
+        <a href="#cert" class="nav-link">★ 성공 기록장</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Banner -->
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-tag">입문자를 위한 스마트 마스터 가이드북</div>
+      <h1>Flashforge Adventurer 5M<br>혼자서도 척척 해내는 3D 프린터 마스터</h1>
+      <p>상상 속 아이디어를 손으로 직접 만질 수 있는 진짜 물건으로 만들어 보세요!<br>기초 이론부터 슬라이싱 프로그램, USB 출력까지 한눈에 확인합니다.</p>
+      <div class="hero-stats">
+        <div class="stat-pill">
+          <div class="stat-num">600 mm/s</div>
+          <div class="stat-desc">초고속 코어XY 출력</div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-num">One-Click</div>
+          <div class="stat-desc">원클릭 전자동 레벨링</div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-num">Quick-Release</div>
+          <div class="stat-desc">원터치 탈부착 노즐</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="content-wrapper">
+
+    <!-- 1. Basic Theory -->
+    <section id="theory" class="module-section">
+      <div class="section-header">
+        <div class="section-icon">💡</div>
+        <div>
+          <h2 class="section-title">1. 3D 프린터 기초 이론: 적층 가공의 원리</h2>
+          <p class="section-desc">평면 종이 인쇄(2D)와 입체 조형물 제작(3D)의 구조적 차이입니다.</p>
+        </div>
+      </div>
+
+      <div class="visual-banner">
+        <div class="visual-step">
+          <div class="visual-circle">🎨</div>
+          <strong>1단계: 3D 모델링</strong>
+          <p style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">Tinkercad / CAD 디자인 (.stl)</p>
+        </div>
+        <div class="arrow-divider">➔</div>
+        <div class="visual-step">
+          <div class="visual-circle">🔪</div>
+          <strong>2단계: 슬라이싱</strong>
+          <p style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">식빵처럼 썰어 레시피(.gx) 만들기</p>
+        </div>
+        <div class="arrow-divider">➔</div>
+        <div class="visual-step">
+          <div class="visual-circle">🖨️</div>
+          <strong>3단계: 3D 프린팅</strong>
+          <p style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">Adventurer 5M으로 층층이 쌓기</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">📐 2D 평면 vs 3D 입체</div>
+          <p style="font-size:0.92rem; color:var(--text-muted);">
+            일반 프린터는 가로(X축)와 세로(Y축)만 있는 납작한 종이 위에 잉크를 칠합니다. 하지만 3D 프린터는 위로 솟아오르는 <strong>높이(Z축)</strong>를 더해 진짜 공간을 차지하는 실물을 만듭니다.
+          </p>
+        </div>
+        <div class="card">
+          <div class="card-title">🔥 글루건의 원리 (FDM 적층 방식)</div>
+          <p style="font-size:0.92rem; color:var(--text-muted);">
+            미술 시간에 쓰는 글루건처럼 단단한 플라스틱 국수 가닥(PLA 필라멘트)을 200℃ 이상의 고열로 녹여 바닥부터 0.2mm씩 얇은 층을 층층이 쌓아 올려 완성합니다.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Essential Terminology -->
+    <section id="terms" class="module-section">
+      <div class="section-header">
+        <div class="section-icon">📖</div>
+        <div>
+          <h2 class="section-title">2. 입문자를 위한 11대 필수 용어 사전</h2>
+          <p class="section-desc">기본적인 핵심 개념을 한눈에 알기 쉽게 정리했습니다.</p>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-title">🔥 노즐 (Nozzle) <span class="card-badge">부품</span></div>
+          <p style="font-size:0.88rem; color:var(--text-muted);">플라스틱을 녹여 국수 가닥처럼 뿜어내는 글루건 끝부분(0.4mm 구멍)입니다.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">🧱 베드 (Bed) <span class="card-badge">부품</span></div>
+          <p style="font-size:0.88rem; color:var(--text-muted);">출력물이 흔들리지 않고 착 달라붙어 세워지는 따뜻한 바닥 기초판입니다.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">🌽 필라멘트 (PLA) <span class="card-badge">재료</span></div>
+          <p style="font-size:0.88rem; color:var(--text-muted);">옥수수 전분 성분으로 냄새가 적고 안전한 대표적인 친환경 플라스틱 소재입니다.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">🤖 익스트루더 (Extruder) <span class="card-badge">모터</span></div>
+          <p style="font-size:0.88rem; color:var(--text-muted);">필라멘트를 톱니바퀴로 꽉 쥐고 노즐 안으로 밀어 넣어주는 정밀 모터입니다.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">📏 레이어 높이 (Layer) <span class="card-badge">품질</span></div>
+          <p style="font-size:0.88rem; color:var(--text-muted);">한 층씩 쌓는 두께(0.2mm 표준)로, 얇을수록 도자기처럼 매끄러워집니다.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">🍯 인필 (Infill) <span class="card-badge">내부</span></div>
+          <p style="font-size:0.88rem; color:var(--text-muted);">속을 얼마나 채울지 정하는 비율(%)로, 15~20% 벌집 모양으로 채웁니다.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">🪵 서포트 (Support) <span class="card-badge">지지대</span></div>
+          <p style="font-size:0.88rem; color:var(--text-muted);">공중에 뜬 부위가 무너지지 않게 받쳐주는 목발이며 출력 후 떼어냅니다.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">⚖️ 베드 레벨링 <span class="card-badge">기초공사</span></div>
+          <p style="font-size:0.88rem; color:var(--text-muted);">바닥판과 노즐 사이의 간격을 완벽하게 균일하도록 맞추는 수평 작업입니다.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">🧵 리트랙션 (Retraction) <span class="card-badge">거미줄방지</span></div>
+          <p style="font-size:0.88rem; color:var(--text-muted);">노즐이 이동할 때 거미줄이 생기지 않게 필라멘트를 살짝 뒤로 당기는 동작입니다.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">👒 브림 (Brim) <span class="card-badge">모자챙</span></div>
+          <p style="font-size:0.88rem; color:var(--text-muted);">바닥 테두리에 얇은 챙을 넓게 둘러 좁은 모델이 넘어지지 않게 고정합니다.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">🛶 라프트 (Raft) <span class="card-badge">뗏목판</span></div>
+          <p style="font-size:0.88rem; color:var(--text-muted);">모델 아래에 두꺼운 플라스틱 뗏목 판을 깔아 작은 부품을 확실히 안착시킵니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Open Source Model Download -->
+    <section id="download" class="module-section">
+      <div class="section-header">
+        <div class="section-icon">🌐</div>
+        <div>
+          <h2 class="section-title">3. 오픈소스 3D 모델 무료 다운로드 & 컴퓨터 파일 준비</h2>
+          <p class="section-desc">싱기버스와 메이커월드에서 필요한 부품만 쏙 골라 다운로드하는 실제 UI 방법입니다.</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card" style="background:#F0F9FF; border-color:#BAE6FD;">
+          <div class="card-title">🔵 싱기버스 (Thingiverse) 낱개 다운로드</div>
+          <ol style="padding-left:18px; font-size:0.9rem; color:var(--text); line-height:1.7;">
+            <li>상단 검색창(`Search Thingiverse`)에 영어로 입력 (예: `robot model`, `keychain`)</li>
+            <li>마음에 드는 사진 클릭 후 상세 페이지로 이동</li>
+            <li>사진 아래 탭 중 <strong>[Thing Files (숫자)]</strong> 클릭</li>
+            <li>필요한 부품(예: `body.stl`) 우측의 <strong>파란색 [↓] 다운로드 아이콘</strong> 콕 누르기</li>
+            <li>광고나 압축 파일 없이 순수 <strong>.stl</strong> 파일만 즉시 저장 완료!</li>
+          </ol>
+          <div style="margin-top:14px;">
+            <a href="https://www.thingiverse.com/" target="_blank" class="action-btn">Thingiverse 바로가기 ↗</a>
+          </div>
+        </div>
+
+        <div class="card" style="background:#FDF4FF; border-color:#F5D0FE;">
+          <div class="card-title">🟣 메이커월드 (MakerWorld) STL 다운로드</div>
+          <ol style="padding-left:18px; font-size:0.9rem; color:var(--text); line-height:1.7;">
+            <li>검색창에 한글로 자유롭게 검색 (예: `피규어`, `드래곤`, `필통`)</li>
+            <li>원하는 모델 클릭 후 상세 정보 확인</li>
+            <li>주황색 Direct Print 버튼을 피하고 <strong>[Download STL]</strong> 또는 <strong>[Raw Model Files]</strong> 클릭</li>
+            <li>내 Adventurer 5M에서 자유롭게 조절 가능한 순수 3D 파일 확보!</li>
+            <li>슬라이서 프로그램 가상 베드로 드래그해서 넣기</li>
+          </ol>
+          <div style="margin-top:14px;">
+            <a href="https://makerworld.com/ko" target="_blank" class="action-btn" style="background:#A855F7;">MakerWorld 바로가기 ↗</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top:20px;">
+        <div class="card">
+          <div class="card-title">📂 STL vs 3MF 차이점</div>
+          <p style="font-size:0.9rem; margin-bottom:8px;">
+            <strong>STL (.stl)</strong>: 뼈대 모양만 담긴 <strong>흑백 스케치북</strong>으로 세상 모든 슬라이서가 읽을 수 있는 기본 표준입니다.
+          </p>
+          <p style="font-size:0.9rem;">
+            <strong>3MF (.3mf)</strong>: 모양, 색상, 내부 채움, 지지대 위치까지 압축해 담은 <strong>종합 선물세트</strong>로 용량이 가볍습니다.
+          </p>
+        </div>
+        <div class="card">
+          <div class="card-title">🗜️ 윈도우 ZIP 압축 풀기 3단계</div>
+          <p style="font-size:0.88rem; color:var(--text-muted); line-height:1.6;">
+            1. [다운로드] 폴더의 노란 지퍼 파일(.zip) 위에서 <strong>마우스 우클릭</strong><br>
+            2. 메뉴에서 <strong>[압축 풀기...]</strong> 클릭 후 하단 <strong>[압축 풀기]</strong> 버튼 누르기<br>
+            3. 열린 일반 폴더 속 진짜 <strong>.stl 파일</strong>을 슬라이서로 드래그하기!
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Slicing 6 Steps -->
+    <section id="slicing" class="module-section">
+      <div class="section-header">
+        <div class="section-icon">⚙️</div>
+        <div>
+          <h2 class="section-title">4. 슬라이싱 프로그램 6단계 실습 마스터 코스</h2>
+          <p class="section-desc">파일을 불러와서 USB에 저장하기까지의 완벽한 6단계 흐름입니다.</p>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-title">1단계 파일 불러오기</div>
+          <p style="font-size:0.88rem; color:var(--text-muted);">.stl 또는 .3mf 파일을 마우스로 잡아 슬라이서 가상 베드로 쏙 던져 넣습니다.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">2단계 크기 조절 (Scale)</div>
+          <p style="font-size:0.88rem; color:var(--text-muted);">'균일 비율(Uniform Scale)'에 체크하고 찌그러지지 않게 크기를 조절합니다 (단축키 S).</p>
+        </div>
+        <div class="card">
+          <div class="card-title">3단계 서포트 설정</div>
+          <p style="font-size:0.88rem; color:var(--text-muted);">공중에 뜬 부위가 있다면 자동 서포트나 트리 서포트를 켭니다. 좁다면 브림도 체크!</p>
+        </div>
+        <div class="card">
+          <div class="card-title">4단계 슬라이스 실행</div>
+          <p style="font-size:0.88rem; color:var(--text-muted);">[슬라이스(Slice)] 버튼을 찰칵 눌러 컴퓨터가 식빵처럼 층별 이동 경로를 계산합니다.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">5단계 층별 미리보기</div>
+          <p style="font-size:0.88rem; color:var(--text-muted);">우측 슬라이더 바를 내리며 1층부터 꼭대기까지 내부 벌집과 지지대를 눈으로 검사합니다.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">6단계 시간 확인 & .gx 저장</div>
+          <p style="font-size:0.88rem; color:var(--text-muted);">출력 시간과 무게를 확인한 뒤 USB 드라이브로 <strong>.gx</strong> 파일로 저장합니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Slicer UI Comparison -->
+    <section id="slicers" class="module-section">
+      <div class="section-header">
+        <div class="section-icon">💻</div>
+        <div>
+          <h2 class="section-title">5. 슬라이서 실제 화면 구조 및 조작법</h2>
+          <p class="section-desc">내가 쓰는 프로그램의 실제 버튼 위치를 확인해 보세요.</p>
+        </div>
+      </div>
+
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('flashprint')">FlashPrint 5 (플래시포지 공식 입문용)</button>
+        <button class="tab-btn" onclick="switchTab('orcaslicer')">OrcaSlicer / Flash Studio (오픈소스 전문용)</button>
+      </div>
+
+      <!-- FlashPrint Tab -->
+      <div id="tab-flashprint" class="tab-pane active">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">🛠️ FlashPrint 5 실제 버튼 배치</div>
+            <ul style="padding-left:18px; font-size:0.9rem; color:var(--text-muted); line-height:1.7;">
+              <li><strong>왼쪽 상단 흰색 카드</strong>: <code>[큐브+]</code>(파일 불러오기), <code>[휴지통]</code>(삭제)</li>
+              <li><strong>오른쪽 짙은 세로 툴바</strong>: 시점(눈), 이동(십자), 회전(원형), 크기(대각선), 자르기, 복제, 자동배치, 서포트(나뭇가지)</li>
+              <li><strong>상단 중앙 버튼</strong>: <code>[슬라이싱 시작]</code> (모델을 불러오면 활성화)</li>
+              <li><strong>우측 레이어 슬라이더</strong>: 층별 단면 시뮬레이션 검사</li>
+            </ul>
+          </div>
+          <div class="card" style="background:#FEF3C7; border-color:#FDE68A;">
+            <div class="card-title">💡 .gx 파일 저장의 비밀!</div>
+            <p style="font-size:0.9rem; color:#92400E; line-height:1.6;">
+              FlashPrint에서 저장할 때 생성되는 <strong>.gx 파일</strong>은 이동 명령서(.gcode) 맨 앞에 <strong>컬러 썸네일 사진</strong>을 함께 저장합니다. 그래서 USB를 Adventurer 5M에 꽂았을 때 화면에 내가 만든 모델 사진이 그대로 나타납니다!
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- OrcaSlicer Tab -->
+      <div id="tab-orcaslicer" class="tab-pane">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">🌿 OrcaSlicer / Flash Studio 실제 버튼 배치</div>
+            <ul style="padding-left:18px; font-size:0.9rem; color:var(--text-muted); line-height:1.7;">
+              <li><strong>상단 탭 바</strong>: <code>준비 하기</code>(디자인 배치) / <code>미리 보기</code>(슬라이스 검사)</li>
+              <li><strong>상단 가로 툴바</strong>: <code>[큐브+]</code>(파일 추가), <code>[A]</code>(자동정렬), <code>[F]</code>(바닥밀착), <code>[S]</code>(크기조절)</li>
+              <li><strong>왼쪽 숨은 메뉴 열기(&lt;)</strong>: Printer(`Adventurer 5M`), Filament(`PLA`), [Support] 탭에서 <code>Tree(auto)</code> 선택!</li>
+              <li><strong>우측 상단 버튼</strong>: <code>[플레이트 슬라이스]</code> 클릭 후 G-code 내보내기</li>
+            </ul>
+          </div>
+          <div class="card" style="background:#DCFCE7; border-color:#BBF7D0;">
+            <div class="card-title">💎 디자이너 CAD 파일 (.step) 지원</div>
+            <p style="font-size:0.9rem; color:#166534; line-height:1.6;">
+              OrcaSlicer 계열은 각진 삼각형 그물망으로 깨진 STL 대신, 매끄러운 <strong>.step 파일</strong>을 그대로 읽어와 훨씬 부드러운 곡면 출력을 완성합니다!
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>비교 항목</th>
+              <th>FlashPrint 5 (공식)</th>
+              <th>OrcaSlicer / Flash Studio (오픈소스)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>지원 확장자</strong></td>
+              <td>.stl, .obj, .3mf, .fpp, .step</td>
+              <td>.3mf, .stl, .step, .obj, .amf</td>
+            </tr>
+            <tr>
+              <td><strong>사진 3D 변환</strong></td>
+              <td>지원 (.jpg, .png 평면 사진을 3D 부조로 자동 변환)</td>
+              <td>미지원 (3D 전용 모델 파일만 지원)</td>
+            </tr>
+            <tr>
+              <td><strong>기본 저장 형식</strong></td>
+              <td><strong>.gx</strong> (컬러 썸네일 사진 포함)</td>
+              <td><strong>.gcode</strong> (표준 명령서)</td>
+            </tr>
+            <tr>
+              <td><strong>서포트 특징</strong></td>
+              <td>기본 직선형 및 기본 트리 서포트</td>
+              <td>상처 없이 톡 떨어지는 <strong>스마트 트리 서포트</strong> 특화</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 6. Software Lineage & Differences -->
+    <section id="software-lineage" class="module-section">
+      <div class="section-header">
+        <div class="section-icon">🧩</div>
+        <div>
+          <h2 class="section-title">6. 플래시프린트 vs 오르카-플래시포지 vs 플래시 스튜디오 차이</h2>
+          <p class="section-desc">이름이 다양해서 헷갈렸던 세 프로그램의 역사와 차이점을 명쾌하게 정리했습니다.</p>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="card" style="border-top:4px solid #3B82F6;">
+          <div class="card-title">1. 플래시프린트 (FlashPrint 5)</div>
+          <span class="card-badge" style="background:#DBEAFE; color:#1E40AF; margin-bottom:8px;">자체 개발 클래식 엔진</span>
+          <p style="font-size:0.88rem; color:var(--text-muted); line-height:1.6;">
+            플래시포지사가 과거부터 독자 개발해 온 오리지널 프로그램입니다. 극도로 단순하고 쉬운 화면, .gx 썸네일 저장, 평면 사진 3D 부조 변환 기능이 장점입니다.
+          </p>
+        </div>
+
+        <div class="card" style="border-top:4px solid #10B981;">
+          <div class="card-title">2. 오르카-플래시포지 (Orca-Flashforge)</div>
+          <span class="card-badge" style="background:#D1FAE5; color:#065F46; margin-bottom:8px;">OrcaSlicer 커스텀 버전</span>
+          <p style="font-size:0.88rem; color:var(--text-muted); line-height:1.6;">
+            세계적인 오픈소스 OrcaSlicer를 플래시포지가 가져와 Adventurer 5M의 600mm/s 고속 출력과 모션에 맞게 튜닝한 프로그램입니다. (트리 서포트, 압력 제어 내장)
+          </p>
+        </div>
+
+        <div class="card" style="border-top:4px solid #F59E0B;">
+          <div class="card-title">3. 플래시 스튜디오 (Flash Studio)</div>
+          <span class="card-badge" style="background:#FEF3C7; color:#92400E; margin-bottom:8px;">최신 리브랜딩 통합 명칭</span>
+          <p style="font-size:0.88rem; color:var(--text-muted); line-height:1.6;">
+            <strong>'오르카-플래시포지'의 최신 공식 명칭입니다!</strong> 플래시포지가 앱과 PC 프로그램을 통합하면서 이름을 바꾼 것이며, 내부 기능과 화면은 오르카와 완전히 같습니다.
+          </p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:20px; background:#F1F5F9;">
+        <div class="card-title">💡 한눈에 보는 프로그램 계보 정리</div>
+        <p style="font-size:0.92rem; color:var(--text); line-height:1.7;">
+          • <strong>오르카-플래시포지 = 플래시 스튜디오 데스크톱</strong> (같은 프로그램의 과거 이름과 현재 이름입니다.)<br>
+          • <strong>FlashPrint 5</strong>: 가장 단순하고 쉬워서 기본 모형을 빠르게 뽑을 때 적합.<br>
+          • <strong>Flash Studio (오르카-플래시포지)</strong>: Adventurer 5M의 600mm/s 초고속 성능을 100% 발휘하고 트리 서포트로 정교한 피규어를 뽑을 때 추천!
+        </p>
+      </div>
+    </section>
+
+    <!-- 7. Support Laboratory -->
+    <section id="supports" class="module-section">
+      <div class="section-header">
+        <div class="section-icon">🌲</div>
+        <div>
+          <h2 class="section-title">7. 서포트 완전 정복 연구소</h2>
+          <p class="section-desc">선형 vs 트리형 구분 기준과 아래가 비어 있어도 서포트가 필요 없는 3대 마법입니다.</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">🏛️ 선형 서포트 (Linear)</div>
+          <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:8px;">
+            바닥부터 수직으로 쭉 올라가는 사각 기둥 형태입니다.
+          </p>
+          <ul style="padding-left:18px; font-size:0.88rem; color:var(--text-muted);">
+            <li><strong>알맞은 물건</strong>: 책상 밑바닥, 다리(Bridge) 천장, 사각 상자, 기계 부품</li>
+            <li><strong>특징</strong>: 튼튼하게 하중을 받치지만 떼어낼 때 도구가 필요하고 흉터가 남기 쉬움</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">🌿 트리 서포트 (Tree)</div>
+          <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:8px;">
+            식물 줄기나 나뭇가지처럼 부드럽게 뻗어나가는 곡선 지지대입니다.
+          </p>
+          <ul style="padding-left:18px; font-size:0.88rem; color:var(--text-muted);">
+            <li><strong>알맞은 물건</strong>: 공룡, 로봇, 동물, 만화 캐릭터 인형 피규어</li>
+            <li><strong>특징</strong>: 끝부분만 살짝 닿아 손으로 톡 치면 상처 없이 떨어지며 재료·시간 절약</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="margin-top:24px;">
+        <h3 style="color:var(--primary); margin-bottom:12px;">✨ 아래가 비어 있어도 서포트가 필요 없는 3가지 마법</h3>
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-title">📐 45도의 법칙</div>
+            <p style="font-size:0.88rem; color:var(--text-muted);">새 층이 아래층에 50% 이상 걸쳐지므로 완만한 경사는 서포트 없이 스스로 버팁니다 (원뿔, 컵).</p>
+          </div>
+          <div class="card">
+            <div class="card-title">🌉 브릿징 (Bridging)</div>
+            <p style="font-size:0.88rem; color:var(--text-muted);">양쪽 기둥 사이(10~50mm)를 가로지를 때 쿨링 팬이 공중에서 급속 냉각시켜 팽팽한 다리를 놓습니다.</p>
+          </div>
+          <div class="card">
+            <div class="card-title">⛩️ 자연 아치 (Arch)</div>
+            <p style="font-size:0.88rem; color:var(--text-muted);">둥근 터널이나 윗부분이 뾰족한 물방울 구멍은 양쪽 벽으로 힘이 분산되어 스스로 섭니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Support Diagnostic Mini-Quiz -->
+      <div class="diagnostic-tool">
+        <div class="diag-title">🔍 내 모델은 어떤 서포트가 필요할까? (서포트 진단기)</div>
+        <p style="font-size:0.88rem; color:#14532D;">출력하고 싶은 형상을 콕 눌러보세요:</p>
+        <div class="diag-btn-group">
+          <button class="diag-btn" onclick="diagnose('dino')">🦖 공룡 / 캐릭터 피규어</button>
+          <button class="diag-btn" onclick="diagnose('desk')">🪑 네모난 미니어처 책상 / 상자</button>
+          <button class="diag-btn" onclick="diagnose('cone')">🍦 꼬깔콘 / 피라미드 / 벌어진 화분</button>
+          <button class="diag-btn" onclick="diagnose('bridge')">🌉 양쪽 기둥이 있는 작은 사각 문틀</button>
+        </div>
+        <div id="diag-output" class="diag-result"></div>
+      </div>
+    </section>
+
+    <!-- 8. Hardware & USB Practice -->
+    <section id="hardware" class="module-section">
+      <div class="section-header">
+        <div class="section-icon">🖨️</div>
+        <div>
+          <h2 class="section-title">8. Flashforge Adventurer 5M 장비 구조 & USB 실습 6단계</h2>
+          <p class="section-desc">컴퓨터에서 USB를 저장해 프린터에서 출력하는 실제 단계입니다. 체크박스를 눌러 완료해 보세요!</p>
+        </div>
+      </div>
+
+      <div class="checklist-progress-bar">
+        <div id="progressBar" class="progress-fill"></div>
+      </div>
+
+      <div id="checklist">
+        <label class="checklist-item">
+          <input type="checkbox" onchange="updateProgress()">
+          <div class="checklist-text">
+            <h4>1단계: 슬라이서에서 .gx 파일 저장하기</h4>
+            <p>FlashPrint 5에서 슬라이스 후 [슬라이스 파일 저장]을 눌러 USB 메모리에 .gx 파일로 담습니다.</p>
+          </div>
+        </label>
+        <label class="checklist-item">
+          <input type="checkbox" onchange="updateProgress()">
+          <div class="checklist-text">
+            <h4>2단계: 컴퓨터에서 USB 분리하여 이동하기</h4>
+            <p>저장이 끝나면 컴퓨터에서 USB를 뽑아 Adventurer 5M 프린터 앞으로 가져갑니다.</p>
+          </div>
+        </label>
+        <label class="checklist-item">
+          <input type="checkbox" onchange="updateProgress()">
+          <div class="checklist-text">
+            <h4>3단계: Adventurer 5M 전면 단자에 USB 꽂기</h4>
+            <p>기계 앞쪽 오른쪽 아래에 있는 네모난 USB 포트에 USB 메모리를 쏙 꽂습니다.</p>
+          </div>
+        </label>
+        <label class="checklist-item">
+          <input type="checkbox" onchange="updateProgress()">
+          <div class="checklist-text">
+            <h4>4단계: 터치스크린에서 사진 보고 파일 선택하기</h4>
+            <p>화면에서 [인쇄(Print)] > 파란색 [USB 아이콘] 터치 후 내 모델 미리보기 사진을 확인하고 누릅니다.</p>
+          </div>
+        </label>
+        <label class="checklist-item">
+          <input type="checkbox" onchange="updateProgress()">
+          <div class="checklist-text">
+            <h4>5단계: 예열 확인 후 [인쇄] 버튼 누르기</h4>
+            <p>노즐 220℃, 베드 50~55℃ 예열 후 파란색 [인쇄(Start)]를 눌러 고속 출력을 시작합니다.</p>
+          </div>
+        </label>
+        <label class="checklist-item">
+          <input type="checkbox" onchange="updateProgress()">
+          <div class="checklist-text">
+            <h4>6단계: 첫 층 1분 관찰 및 식힌 후 자석판 구부려 분리하기</h4>
+            <p>바닥 첫 층이 납작하게 잘 붙는지 1분간 눈으로 보고, 인쇄 완료 후 40℃ 이하로 식으면 베드를 살짝 구부려 "톡!" 떼어냅니다.</p>
+          </div>
+        </label>
+      </div>
+    </section>
+
+    <!-- 9. Safety & FAQ -->
+    <section id="safety" class="module-section">
+      <div class="section-header">
+        <div class="section-icon">🛡️</div>
+        <div>
+          <h2 class="section-title">9. 안전 수칙 5계명 & 문제 해결 FAQ</h2>
+          <p class="section-desc">안전 수칙을 지키고 문제가 생겼을 때 스스로 해결하는 비법입니다.</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card" style="border-left:4px solid #EF4444;">
+          <div class="card-title" style="color:#DC2626;">🚨 안전 수칙 5계명 (골든 룰)</div>
+          <ol style="padding-left:18px; font-size:0.88rem; color:var(--text); line-height:1.7;">
+            <li><strong>노즐 화상 주의</strong>: 노즐은 200℃가 넘으니 절대 손을 대지 않습니다.</li>
+            <li><strong>안전거리 유지</strong>: 모터와 헤드가 번개처럼 움직이니 손을 넣지 않습니다.</li>
+            <li><strong>실내 환기 필수</strong>: 플라스틱이 녹을 때 창문을 열어 공기를 통하게 합니다.</li>
+            <li><strong>강제 조작 금지</strong>: 작동 중 베드를 잡아당기지 않고 [정지] 버튼을 누릅니다.</li>
+            <li><strong>도구 안전 취급</strong>: 스크래퍼나 니퍼를 쓸 땐 몸 반대쪽으로 밀며 주의합니다.</li>
+          </ol>
+        </div>
+
+        <div>
+          <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">❓ 바닥에 첫 층이 안 붙고 굴러다녀요! <span>▼</span></div>
+            <div class="faq-a">
+              베드에 손 기름이나 먼지가 묻어 있으면 안 붙습니다. 물티슈로 닦고 물기를 말린 뒤 터치스크린에서 <strong>[원클릭 레벨링]</strong>을 다시 실행하고 슬라이서에서 <strong>브림(Brim)</strong>을 켜보세요!
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">❓ 출력물 사이에 지저분한 거미줄이 생겨요! <span>▼</span></div>
+            <div class="faq-a">
+              노즐 온도가 너무 높거나 필라멘트가 습기를 먹었을 때 생깁니다. 슬라이서에서 온도를 5℃ 낮추거나(예: 215℃ &rarr; 210℃), 리트랙션 거리를 살짝 늘려주세요.
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">❓ 출력물이 베드에서 너무 꽉 붙어서 안 떨어져요! <span>▼</span></div>
+            <div class="faq-a">
+              억지로 칼로 긁지 마세요! 베드가 30℃ 이하로 차갑게 식을 때까지 기다린 후 유연한 PEI 자석 강판을 떼어내어 양손으로 활처럼 살짝 구부리면 "딱!" 소리와 함께 쉽게 떨어집니다.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. Certificate -->
+    <section id="cert" class="module-section">
+      <div class="certificate-card">
+        <div style="font-size:2.5rem; margin-bottom:8px;">🏆</div>
+        <h2 class="cert-title">나의 첫 3D 출력 성공 디지털 인증서</h2>
+        <p style="font-size:0.95rem; color:var(--text-muted);">
+          첫 번째 3D 출력을 성공한 메이커님! 아래에 이름과 작품을 적고 인증 도장을 쾅 찍어보세요!
+        </p>
+
+        <div class="cert-inputs">
+          <input type="text" id="makerName" class="cert-input" placeholder="메이커 이름">
+          <input type="text" id="modelName" class="cert-input" placeholder="출력한 작품 이름">
+        </div>
+
+        <button class="stamp-btn" onclick="issueCert()">★ 성공 도장 찍기! ★</button>
+
+        <div id="stampBadge" class="stamp-badge">
+          3D 메이커<br>인증 완료!
+        </div>
+
+        <div style="margin-top:20px;">
+          <button onclick="window.print()" class="action-btn" style="background:#475569;">🖨️ 이 가이드북 인쇄하기</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+      if(tabId === 'flashprint') {
+        document.querySelectorAll('.tab-btn')[0].classList.add('active');
+        document.getElementById('tab-flashprint').classList.add('active');
+      } else {
+        document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        document.getElementById('tab-orcaslicer').classList.add('active');
+      }
+    }
+
+    function diagnose(type) {
+      const out = document.getElementById('diag-output');
+      out.style.display = 'block';
+      if(type === 'dino') {
+        out.innerHTML = "<strong>👉 추천: 트리 서포트 (Tree Support)!</strong><br>턱과 팔, 꼬리처럼 굴곡진 피규어는 나뭇가지 모양의 트리 서포트를 켜면 출력 후 흉터 없이 손으로 톡 깔끔하게 떼어낼 수 있습니다.";
+        out.style.borderColor = "#16A34A";
+      } else if(type === 'desk') {
+        out.innerHTML = "<strong>👉 추천: 선형 서포트 (Linear Support)!</strong><br>책상 밑바닥이나 상자 지붕처럼 네모나고 평평한 넓은 천장은 바닥부터 똑바로 올라가는 수직 기둥형 선형 서포트가 가장 튼튼하게 받쳐줍니다.";
+        out.style.borderColor = "#2563EB";
+      } else if(type === 'cone') {
+        out.innerHTML = "<strong>👉 추천: 서포트 필요 없음 (No Support)!</strong><br>45도의 법칙에 따라 완만한 기울기는 새 층이 아래층에 절반 이상 걸쳐지므로 지지대 없이 100% 자립할 수 있습니다. 서포트를 끄고 바로 출력하세요!";
+        out.style.borderColor = "#D97706";
+      } else if(type === 'bridge') {
+        out.innerHTML = "<strong>👉 추천: 브릿징 기술로 서포트 없이 도전!</strong><br>양쪽에 튼튼한 기둥이 있는 50mm 이내의 문틀은 Adventurer 5M의 강력한 쿨링 팬이 공중에서 순간 냉각시켜 다리를 놓아주므로 서포트 없이도 깔끔하게 성공합니다.";
+        out.style.borderColor = "#0D9488";
+      }
+    }
+
+    function updateProgress() {
+      const checkboxes = document.querySelectorAll('#checklist input[type="checkbox"]');
+      let checked = 0;
+      checkboxes.forEach(cb => { if(cb.checked) checked++; });
+      const percent = Math.round((checked / checkboxes.length) * 100);
+      document.getElementById('progressBar').style.width = percent + '%';
+      if(percent === 100) {
+        alert("🎉 축하합니다! Adventurer 5M 실습 6단계를 모두 마스터했습니다! 이제 멋진 작품을 완성해보세요!");
+      }
+    }
+
+    function toggleFaq(el) {
+      const answer = el.nextElementSibling;
+      const isVisible = answer.style.display === 'block';
+      document.querySelectorAll('.faq-a').forEach(a => a.style.display = 'none');
+      document.querySelectorAll('.faq-q span').forEach(s => s.innerText = '▼');
+      if (!isVisible) {
+        answer.style.display = 'block';
+        el.querySelector('span').innerText = '▲';
+      }
+    }
+
+    function issueCert() {
+      const name = document.getElementById('makerName').value.trim();
+      const model = document.getElementById('modelName').value.trim();
+      if(!name || !model) {
+        alert("메이커 이름과 작품 이름을 먼저 입력해 주세요!");
+        return;
+      }
+      const stamp = document.getElementById('stampBadge');
+      stamp.style.display = 'flex';
+      alert("🌟 축하합니다, " + name + " 메이커님! '" + model + "' 3D 출력을 성공적으로 인증했습니다!");
+    }
+  </script>
+</body>
+</html>
